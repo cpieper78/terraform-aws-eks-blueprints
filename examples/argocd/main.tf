@@ -1,5 +1,11 @@
 provider "aws" {
   region = local.region
+  default_tags {
+    tags = {
+      built_on = formatdate("MMM DD, YYYY",timestamp())
+      built_by = "cpieper"
+    }
+  }
 }
 
 provider "kubernetes" {
@@ -34,7 +40,7 @@ data "aws_availability_zones" "available" {}
 
 locals {
   name   = basename(path.cwd)
-  region = "us-west-2"
+  region = "us-east-1"
 
   vpc_cidr = "10.0.0.0/16"
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
